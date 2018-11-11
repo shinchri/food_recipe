@@ -4,13 +4,13 @@ public class Recipe {
     private String title;
     private String href;
     private String ingredients;
-    private String thumnail;
+    private String thumbnail;
 
-    public Recipe(String title, String href, String ingredients, String thumnail) {
+    public Recipe(String title, String href, String ingredients, String thumbnail) {
         this.title = title;
         this.href = href;
         this.ingredients = ingredients;
-        this.thumnail = thumnail;
+        this.thumbnail = thumbnail;
     }
 
     public String getTitle() {
@@ -37,11 +37,11 @@ public class Recipe {
         this.ingredients = ingredients;
     }
 
-    public String getThumnail() {
-        return thumnail;
+    public String getThumbnail() {
+        return thumbnail;
     }
 
-    public void setThumnail(String thumnail) {
-        this.thumnail = thumnail;
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }
