@@ -1,5 +1,6 @@
 package com.example.shinc.final_project_2018;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -82,5 +83,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
     @Override
     public void onItemClicked(int index) {
         Toast.makeText(MainActivity.this, arrayList.get(index).getTitle(), Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+
+        Recipe recipe = arrayList.get(index);
+        intent.putExtra("title", recipe.getTitle());
+        intent.putExtra("ingredient", recipe.getIngredients());
+        intent.putExtra("href", recipe.getHref());
+
+        startActivity(intent);
     }
 }
