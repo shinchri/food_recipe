@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -17,7 +18,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerAdapter.ItemClicked{
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             Log.d("chris", response.toString());
                             jsonArray = response.getJSONArray("results");
-                            //Log.d()
+
                             count = 0;
                             arrayList.clear();
                             while(count < jsonArray.length()) {
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                                 count++;
                             }
 
-                            adapter = new RecyclerAdapter(arrayList);
+                            adapter = new RecyclerAdapter(MainActivity.this, arrayList);
                             recyclerView.setAdapter(adapter);
 
 
@@ -76,5 +77,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         MySingleton.getmInstance(MainActivity.this).addToRequestque(jsonObjectRequest);
+    }
+
+    @Override
+    public void onItemClicked(int index) {
+        Toast.makeText(MainActivity.this, arrayList.get(index).getTitle(), Toast.LENGTH_SHORT).show();
     }
 }
