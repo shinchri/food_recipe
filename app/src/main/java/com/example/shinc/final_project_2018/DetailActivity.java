@@ -2,6 +2,7 @@ package com.example.shinc.final_project_2018;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
@@ -27,5 +28,12 @@ public class DetailActivity extends AppCompatActivity {
         tvTitle.setText(title);
         tvIngredient.setText(ingredients);
         tvWebsite.setText(href);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Recipe Detail");
+        actionBar.setSubtitle(title);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 }

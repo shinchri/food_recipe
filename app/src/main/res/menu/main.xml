@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Login"
+        android:id="@+id/login"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:icon="@drawable/login"/>
+
+    <item android:title="Refresh"
+    android:id="@+id/refresh"
+    android:orderInCategory="100"
+    app:showAsAction="never"
+    android:icon="@drawable/refresh"/>
+
+
+    <item android:title="Setting"
+        android:id="@+id/setting"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/settings"/>
+</menu>

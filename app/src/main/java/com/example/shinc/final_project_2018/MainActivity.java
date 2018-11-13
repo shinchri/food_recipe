@@ -2,10 +2,13 @@ package com.example.shinc.final_project_2018;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -38,12 +41,23 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
+        makeJSONRequest();
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(" Recipe Lists");
+        actionBar.setSubtitle(" Yum!");
+        actionBar.setIcon(R.drawable.recepe);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
+    }
+
+    public void makeJSONRequest(){
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, json_url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            Log.d("chris", response.toString());
                             jsonArray = response.getJSONArray("results");
 
                             count = 0;
@@ -82,8 +96,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
 
     @Override
     public void onItemClicked(int index) {
-        Toast.makeText(MainActivity.this, arrayList.get(index).getTitle(), Toast.LENGTH_SHORT).show();
-
         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
 
         Recipe recipe = arrayList.get(index);
@@ -92,5 +104,30 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         intent.putExtra("href", recipe.getHref());
 
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+            case R.id.login:
+                Toast.makeText(this, "login clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.setting:
+                Toast.makeText(this, "settings clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.refresh:
+                Toast.makeText(this, "refresh clicked", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
