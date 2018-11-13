@@ -19,8 +19,8 @@ public class DetailActivity extends AppCompatActivity {
         tvWebsite = findViewById(R.id.tvWeb);
         tvIngredient = findViewById(R.id.tvIngredient);
 
+        // retrieving data passed from MainActivity
         Intent intent = getIntent();
-
         String title = intent.getStringExtra("title");
         String href = intent.getStringExtra("href");
         String ingredients = intent.getStringExtra("ingredient");

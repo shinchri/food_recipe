@@ -41,8 +41,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
+        // calling makeJSONRequest method to fill the list with food menu
         makeJSONRequest();
 
+        // setting the action bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(" Recipe Lists");
         actionBar.setSubtitle(" Yum!");
@@ -52,14 +54,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
 
     }
 
+    // Makes use of the Volly to read json data
+    // the advantage of using Volley (one of them) is that strict ordering is followed
     public void makeJSONRequest(){
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, json_url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            // get the array of results which resides in the object
                             jsonArray = response.getJSONArray("results");
 
+                            // repopulate the arraylist
                             count = 0;
                             arrayList.clear();
                             while(count < jsonArray.length()) {
@@ -76,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
                                 count++;
                             }
 
+                            // this is where the actual list is populated
                             adapter = new RecyclerAdapter(MainActivity.this, arrayList);
                             recyclerView.setAdapter(adapter);
 
@@ -94,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         MySingleton.getmInstance(MainActivity.this).addToRequestque(jsonObjectRequest);
     }
 
+    // this function runs when the item in the list is clicked
+    // starts DetailActivity with given index (order of item)
     @Override
     public void onItemClicked(int index) {
         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
@@ -106,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         startActivity(intent);
     }
 
+    // needed for actionbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
@@ -113,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         return super.onCreateOptionsMenu(menu);
     }
 
+    // Figures out which item is selected from the action bar,
+    //  and takes appropriate action.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
