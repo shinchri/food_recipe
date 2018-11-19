@@ -1,5 +1,6 @@
 package com.example.shinc.final_project_2018;
 
+import android.arch.persistence.room.Room;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,11 +15,16 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText etRegUsername, etRegPass, etRegRePass;
     private CardView cvLogin;
     private TextView tvLogin;
+    public static MyAppDatabase myAppDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        // allowMainThreadQueries() allow queries to be carried out in the main thread
+        myAppDatabase = Room.databaseBuilder(getApplicationContext(), MyAppDatabase.class,
+                "userdb").allowMainThreadQueries().build();
 
         etRegUsername = findViewById(R.id.etRegUsername);
         etRegPass = findViewById(R.id.etRegPass);
@@ -58,10 +64,34 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(SignUpActivity.this, "Please make sure the passwords match",
                             Toast.LENGTH_SHORT).show();
                 }
+                else if(password.length() < 8){
+                    // check the password length
+                    Toast.makeText(SignUpActivity.this, "Please make sure the password is 8 characters or more",
+                            Toast.LENGTH_SHORT).show();
+                }
                 else {
                     // check data base for the username to see if it exist
                     // if it does let the user know
                     // else save the user data, and let the user know.
+                    int size = SignUpActivity.myAppDatabase.myDao().getUsersWithName(username).size();
+
+                    // the size will be either 1 or zero (since user_name column is checked for uniqueness
+                    if(size == 1) {
+                        Toast.makeText(SignUpActivity.this, "The username already exists.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        User user = new User();
+                        user.setName(username);
+                        user.setPassword(password);
+
+                        SignUpActivity.myAppDatabase.myDao().addUser(user);
+
+                        Toast.makeText(SignUpActivity.this, "The user sign up was successful.",
+                                Toast.LENGTH_SHORT).show();
+
+                        finish();
+                    }
                 }
             }
         });

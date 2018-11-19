@@ -1,5 +1,6 @@
 package com.example.shinc.final_project_2018;
 
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -10,16 +11,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText etLoginUser, etLoginPass;
     private CardView cvLogin;
     private TextView tvRegister;
+    public static MyAppDatabase myAppDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // allowMainThreadQueries() allow queries to be carried out in the main thread
+        myAppDatabase = Room.databaseBuilder(getApplicationContext(), MyAppDatabase.class,
+                "userdb").allowMainThreadQueries().build();
 
         // setting the action bar
         ActionBar actionBar = getSupportActionBar();
@@ -55,6 +63,28 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else {
                     // proceed to check database for object with the given username
+                    List<User> list_of_user = LoginActivity.myAppDatabase.myDao().getUsersWithName(username);
+
+                    // check if the user exists
+                    if(list_of_user.size() == 0) {
+                        Toast.makeText(LoginActivity.this,
+                                "The user does not exist, please check spelling or create a new user.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        // check for correct password
+                        User user = list_of_user.get(0);
+                        if(!user.getPassword().equals(password)) {
+                            Toast.makeText(LoginActivity.this, "The password was no correct, please try again.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            // start main activity
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
                 }
             }
         });
