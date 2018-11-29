@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +23,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements RecyclerAdapter.ItemClicked{
+public class MainActivity extends AppCompatActivity implements RecyclerAdapter.ItemClicked, SearchView.OnQueryTextListener {
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
@@ -120,8 +121,35 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
 
+        MenuItem searchItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+
         return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        String userInput = s.toLowerCase();
+
+        json_url = "http://www.recipepuppy.com/api/?i=&q=" + userInput;
+
+        makeJSONRequest();
+
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        String userInput = s.toLowerCase();
+
+        json_url = "http://www.recipepuppy.com/api/?i=&q=" + userInput;
+
+        makeJSONRequest();
+        return true;
+    }
+
+
 
     // Figures out which item is selected from the action bar,
     //  and takes appropriate action.
@@ -142,4 +170,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

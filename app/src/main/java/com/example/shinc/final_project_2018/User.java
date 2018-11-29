@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity(tableName = "users",
         indices = {@Index(value = {"user_name"}, unique = true)})
 public class User {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
 
     // user_name is checked for uniqueness
