@@ -14,14 +14,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     ArrayList<Recipe> arrayList = new ArrayList<>();
     ItemClicked activity;
+    float textSize;
+
 
     public interface ItemClicked {
         void onItemClicked(int index);
     }
 
-    public RecyclerAdapter(Context context, ArrayList<Recipe> arrayList) {
+    public RecyclerAdapter(Context context, ArrayList<Recipe> arrayList, float textSize) {
         this.arrayList = arrayList;
         activity = (ItemClicked) context;
+        this.textSize = textSize;
     }
 
     @NonNull
@@ -38,6 +41,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         viewHolder.itemView.setTag(arrayList.get(i));
 
         viewHolder.tvTitle.setText(arrayList.get(i).getTitle());
+        viewHolder.tvTitle.setTextSize(textSize);
     }
 
     @Override

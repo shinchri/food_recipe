@@ -1,7 +1,9 @@
 package com.example.shinc.final_project_2018;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +34,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
     int count;
     String json_url = "http://www.recipepuppy.com/api/?i=onions,garlic&q=omelet&p=3";
 
+    public static final String PREF_TEXT_SIZE = "pref_text_size";
+    public static final String PREF_SEARCH_TYPE = "pref_search_type";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +47,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        // calling makeJSONRequest method to fill the list with food menu
-        makeJSONRequest();
+        // set the default values
+        PreferenceManager.setDefaultValues(this, R.xml.preference, false);
 
         // setting the action bar
         ActionBar actionBar = getSupportActionBar();
@@ -54,6 +59,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         actionBar.setDisplayShowHomeEnabled(true);
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // calling makeJSONRequest method to fill the list with food menu
+        makeJSONRequest();
+    }
+
+
 
     // Makes use of the Volly to read json data
     // the advantage of using Volley (one of them) is that strict ordering is followed
@@ -83,8 +98,23 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
                                 count++;
                             }
 
+                            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                            String searchType = sharedPreferences.getString(PREF_TEXT_SIZE, "");
+
+                            float textSize;
+
+                            if(searchType.equals("12sp")) {
+                                textSize = 12;
+                            }
+                            else if (searchType.equals("14sp")) {
+                                textSize = 14;
+                            }
+                            else {
+                                textSize = 18;
+                            }
+
                             // this is where the actual list is populated
-                            adapter = new RecyclerAdapter(MainActivity.this, arrayList);
+                            adapter = new RecyclerAdapter(MainActivity.this, arrayList, textSize);
                             recyclerView.setAdapter(adapter);
 
 
@@ -130,9 +160,17 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
 
     @Override
     public boolean onQueryTextSubmit(String s) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String searchType = sharedPreferences.getString(PREF_SEARCH_TYPE, "");
+
         String userInput = s.toLowerCase();
 
-        json_url = "http://www.recipepuppy.com/api/?i=&q=" + userInput;
+        if(searchType.equals("title")) {
+            json_url = "http://www.recipepuppy.com/api/?i=&q=" + userInput;
+        }
+        else {
+            json_url = "http://www.recipepuppy.com/api/?i=" + userInput + "&q=";
+        }
 
         makeJSONRequest();
 
@@ -141,10 +179,17 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
 
     @Override
     public boolean onQueryTextChange(String s) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String searchType = sharedPreferences.getString(PREF_SEARCH_TYPE, "");
+
         String userInput = s.toLowerCase();
 
-        json_url = "http://www.recipepuppy.com/api/?i=&q=" + userInput;
-
+        if(searchType.equals("title")) {
+            json_url = "http://www.recipepuppy.com/api/?i=&q=" + userInput;
+        }
+        else {
+            json_url = "http://www.recipepuppy.com/api/?i=" + userInput + "&q=";
+        }
         makeJSONRequest();
         return true;
     }
@@ -162,6 +207,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
                 break;
             case R.id.setting:
                 Toast.makeText(this, "settings clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 break;
             case R.id.refresh:
                 Toast.makeText(this, "refresh clicked", Toast.LENGTH_SHORT).show();

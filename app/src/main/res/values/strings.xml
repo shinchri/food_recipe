@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">Final_Project_2018</string>
+
+    <string name="pref_textsize_default_value">14sp</string>
+    <string name="pref_search_type_default_value">title</string>
+
+    <string-array name="pref_textsize_entries">
+        <item>12sp</item>
+        <item>14sp</item>
+        <item>18sp</item>
+    </string-array>
+
+    <string-array name="pref_textsize_values">
+        <item>12sp</item>
+        <item>14sp</item>
+        <item>18sp</item>
+    </string-array>
+
+    <string-array name="pref_search_type_entries">
+        <item>Search By Title </item>
+        <item>Search By Ingredients</item>
+    </string-array>
+
+    <string-array name="pref_search_type_values">
+        <item>title</item>
+        <item>ingredients</item>
+    </string-array>
 </resources>
