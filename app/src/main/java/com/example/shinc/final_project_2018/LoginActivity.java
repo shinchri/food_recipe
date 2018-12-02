@@ -81,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                         else {
                             // start main activity
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra("username", username);
                             startActivity(intent);
                             finish();
                         }

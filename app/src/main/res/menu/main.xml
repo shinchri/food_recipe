@@ -8,18 +8,6 @@
         app:showAsAction="collapseActionView|ifRoom"
         app:actionViewClass="android.support.v7.widget.SearchView"/>
 
-    <item android:title="Login"
-        android:id="@+id/login"
-        android:orderInCategory="100"
-        app:showAsAction="never"
-        android:icon="@drawable/login"/>
-
-    <item android:title="Refresh"
-    android:id="@+id/refresh"
-    android:orderInCategory="100"
-    app:showAsAction="never"
-    android:icon="@drawable/refresh"/>
-
 
     <item android:title="Setting"
         android:id="@+id/setting"

@@ -1,5 +1,6 @@
 package com.example.shinc.final_project_2018;
 
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -33,6 +34,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
     JSONArray jsonArray;
     int count;
     String json_url = "http://www.recipepuppy.com/api/?i=onions,garlic&q=omelet&p=3";
+    User currentUser;
+    public static MyAppDatabase myAppDatabase;
+    String subtitle;
+    Intent intent;
+    String username;
 
     public static final String PREF_TEXT_SIZE = "pref_text_size";
     public static final String PREF_SEARCH_TYPE = "pref_search_type";
@@ -50,14 +56,29 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         // set the default values
         PreferenceManager.setDefaultValues(this, R.xml.preference, false);
 
+        intent = getIntent();
+        username = intent.getStringExtra("username");
+
+        // allowMainThreadQueries() allow queries to be carried out in the main thread
+        myAppDatabase = Room.databaseBuilder(getApplicationContext(), MyAppDatabase.class,
+                "userdb").allowMainThreadQueries().build();
+
+        // The issue is that the intent is empty...
+        // How to persist the username?
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                currentUser = myAppDatabase.myDao().getUsersWithName(username).get(0);
+//            }
+//        }).start();
+
         // setting the action bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(" Recipe Lists");
-        actionBar.setSubtitle(" Yum!");
+        actionBar.setSubtitle(" Welcome!");
         actionBar.setIcon(R.drawable.recepe);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-
     }
 
     @Override
@@ -67,8 +88,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         // calling makeJSONRequest method to fill the list with food menu
         makeJSONRequest();
     }
-
-
 
     // Makes use of the Volly to read json data
     // the advantage of using Volley (one of them) is that strict ordering is followed
@@ -86,10 +105,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
                             arrayList.clear();
                             while(count < jsonArray.length()) {
                                 try {
-                                    Recipe recipe = new Recipe(jsonArray.getJSONObject(count).getString("title"),
-                                            jsonArray.getJSONObject(count).getString("href"),
-                                            jsonArray.getJSONObject(count).getString("ingredients"),
-                                            jsonArray.getJSONObject(count).getString("thumbnail"));
+                                    Recipe recipe = new Recipe(jsonArray.getJSONObject(count).getString("title").trim(),
+                                            jsonArray.getJSONObject(count).getString("href").trim(),
+                                            jsonArray.getJSONObject(count).getString("ingredients").trim(),
+                                            jsonArray.getJSONObject(count).getString("thumbnail").trim());
                                     arrayList.add(recipe);
 
                                 } catch (JSONException e) {
@@ -194,24 +213,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         return true;
     }
 
-
-
     // Figures out which item is selected from the action bar,
     //  and takes appropriate action.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch(item.getItemId()) {
-            case R.id.login:
-                Toast.makeText(this, "login clicked", Toast.LENGTH_SHORT).show();
-                break;
             case R.id.setting:
                 Toast.makeText(this, "settings clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
-                break;
-            case R.id.refresh:
-                Toast.makeText(this, "refresh clicked", Toast.LENGTH_SHORT).show();
                 break;
         }
 
