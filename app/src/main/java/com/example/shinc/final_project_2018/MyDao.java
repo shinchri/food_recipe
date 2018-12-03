@@ -29,4 +29,16 @@ public interface MyDao {
     @Update
     void updateUser(User user);
 
+    @Insert
+    void addFav(Favourite favourite);
+
+    @Query("SELECT * from favourites")
+    List<Favourite> getFavourites();
+
+    @Query("SELECT * from favourites WHERE title IS :title")
+    List<Favourite> getFavouritesWithTitle(String title);
+
+    @Delete
+    int deleteFavourite(Favourite favourite);
+
 }

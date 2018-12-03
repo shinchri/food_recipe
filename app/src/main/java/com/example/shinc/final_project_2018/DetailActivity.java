@@ -1,5 +1,6 @@
 package com.example.shinc.final_project_2018;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -16,22 +17,29 @@ import android.widget.Toast;
 public class DetailActivity extends AppCompatActivity {
 
     TextView tvTitle, tvIngredient;
-    Button btnWebsite;
+    Button btnWebsite, btnFav;
+    public static MyAppDatabase myAppDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        // allowMainThreadQueries() allow queries to be carried out in the main thread
+        myAppDatabase = Room.databaseBuilder(getApplicationContext(), MyAppDatabase.class,
+                "userdb").allowMainThreadQueries().build();
+
         tvTitle = findViewById(R.id.tvTitle);
         tvIngredient = findViewById(R.id.tvIngredient);
         btnWebsite = findViewById(R.id.btnWebsite);
+        btnFav = findViewById(R.id.btnFav);
 
         // retrieving data passed from MainActivity
         Intent intent = getIntent();
-        String title = intent.getStringExtra("title").trim();
+        final String title = intent.getStringExtra("title").trim();
         final String href = intent.getStringExtra("href"); // had to be final to be used in inner class
-        String ingredients = intent.getStringExtra("ingredient").trim();
+        final String ingredients = intent.getStringExtra("ingredient").trim();
+        final String thumbnail = intent.getStringExtra("thumbnail");
 
         tvTitle.setText(title);
         tvIngredient.setText(ingredients);
@@ -57,6 +65,32 @@ public class DetailActivity extends AppCompatActivity {
                 else {
                     Toast.makeText(DetailActivity.this,
                             "There are no internet connection. Please try again.",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        // saves it to favourite table when clicked
+        btnFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int size = DetailActivity.myAppDatabase.myDao().getFavouritesWithTitle(title).size();
+
+                if(size == 1) {
+                    Toast.makeText(DetailActivity.this, "It already is in the list.",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Favourite favourite = new Favourite();
+                    favourite.setTitle(title);
+                    favourite.setHref(href);
+                    favourite.setThumbnail(thumbnail);
+                    favourite.setIngredients(ingredients);
+
+                    DetailActivity.myAppDatabase.myDao().addFav(favourite);
+
+                    Toast.makeText(DetailActivity.this, "Favourite Saved!.",
                             Toast.LENGTH_SHORT).show();
                 }
             }

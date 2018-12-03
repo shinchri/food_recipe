@@ -1,6 +1,5 @@
 package com.example.shinc.final_project_2018;
 
-import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -33,12 +32,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
     ArrayList<Recipe> arrayList = new ArrayList<>();
     JSONArray jsonArray;
     int count;
-    String json_url = "http://www.recipepuppy.com/api/?i=onions,garlic&q=omelet&p=3";
-    User currentUser;
-    public static MyAppDatabase myAppDatabase;
-    String subtitle;
-    Intent intent;
-    String username;
+    String json_url = "http://www.recipepuppy.com/api/?i=&q=&p=3";
 
     public static final String PREF_TEXT_SIZE = "pref_text_size";
     public static final String PREF_SEARCH_TYPE = "pref_search_type";
@@ -55,22 +49,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
 
         // set the default values
         PreferenceManager.setDefaultValues(this, R.xml.preference, false);
-
-        intent = getIntent();
-        username = intent.getStringExtra("username");
-
-        // allowMainThreadQueries() allow queries to be carried out in the main thread
-        myAppDatabase = Room.databaseBuilder(getApplicationContext(), MyAppDatabase.class,
-                "userdb").allowMainThreadQueries().build();
-
-        // The issue is that the intent is empty...
-        // How to persist the username?
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                currentUser = myAppDatabase.myDao().getUsersWithName(username).get(0);
-//            }
-//        }).start();
 
         // setting the action bar
         ActionBar actionBar = getSupportActionBar();
@@ -158,9 +136,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
 
         Recipe recipe = arrayList.get(index);
-        intent.putExtra("title", recipe.getTitle());
-        intent.putExtra("ingredient", recipe.getIngredients());
-        intent.putExtra("href", recipe.getHref());
+        intent.putExtra("title", recipe.getTitle().trim());
+        intent.putExtra("ingredient", recipe.getIngredients().trim());
+        intent.putExtra("href", recipe.getHref().trim());
+        intent.putExtra("thumbnail", recipe.getThumbnail().trim());
 
         startActivity(intent);
     }
