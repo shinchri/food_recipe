@@ -12,7 +12,6 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -196,11 +195,15 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
     //  and takes appropriate action.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
 
         switch(item.getItemId()) {
             case R.id.setting:
-                Toast.makeText(this, "settings clicked", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, SettingsActivity.class);
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.favourite:
+                intent = new Intent(this, FavouriteActivity.class);
                 startActivity(intent);
                 break;
         }

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
 
-    ArrayList<Recipe> arrayList = new ArrayList<>();
+    ArrayList<Recipe> arrayList;
     ItemClicked activity;
     float textSize;
 

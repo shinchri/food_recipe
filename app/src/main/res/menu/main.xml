@@ -14,4 +14,10 @@
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
         android:icon="@drawable/settings"/>
+
+    <item android:title="Favourite"
+        android:id="@+id/favourite"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+
 </menu>
