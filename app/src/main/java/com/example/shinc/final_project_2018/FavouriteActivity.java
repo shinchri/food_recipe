@@ -51,6 +51,7 @@ public class FavouriteActivity extends AppCompatActivity implements RecyclerAdap
     protected void onResume() {
         super.onResume();
 
+        // fill the items in the recycler view
         fillList();
     }
 
@@ -67,13 +68,17 @@ public class FavouriteActivity extends AppCompatActivity implements RecyclerAdap
         startActivity(intent);
     }
 
+    // fills the recycler view list
     public void fillList() {
+        // retrieves the data from the Favourite table
         arrayFavList = (ArrayList)FavouriteActivity.myAppDatabase.myDao().getFavourites();
 
         int size = arrayFavList.size();
 
+        // arrayList will be passed into adapter
         arrayList = new ArrayList<>();
 
+        // size > 0 when there is at least one item in the list
         if(size > 0) {
             for(Favourite favourite: arrayFavList) {
                 Recipe recipe = new Recipe(favourite.getTitle(),
@@ -84,6 +89,7 @@ public class FavouriteActivity extends AppCompatActivity implements RecyclerAdap
                 arrayList.add(recipe);
             }
 
+            // check the text size setting
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(FavouriteActivity.this);
             String searchType = sharedPreferences.getString(PREF_TEXT_SIZE, "");
 

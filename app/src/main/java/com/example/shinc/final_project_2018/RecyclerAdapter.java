@@ -3,7 +3,6 @@ package com.example.shinc.final_project_2018;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +19,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     ItemClicked activity;
     float textSize;
 
-
+    // implemented by MainActivity and FavouriteActivity
+    // this interface is needed to communicate with MainActivity and FavouriteActivity
     public interface ItemClicked {
         void onItemClicked(int index);
     }
 
+    // constructor
     public RecyclerAdapter(Context context, ArrayList<Recipe> arrayList, float textSize) {
         this.arrayList = arrayList;
         activity = (ItemClicked) context;
@@ -40,6 +41,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         return myViewHolder;
     }
 
+    // fills the items in each list
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int i) {
         viewHolder.itemView.setTag(arrayList.get(i));
@@ -49,13 +51,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
         String url = arrayList.get(i).getThumbnail();
 
-        Log.d("chris", url);
         if(!url.equals("")) {
             Picasso.get().load(url).placeholder(R.drawable.ic_image_placeholder).error(R.drawable.ic_image_error).into(viewHolder.ivImage);
         }
 
     }
 
+    // gets the count of the items
     @Override
     public int getItemCount() {
         return arrayList.size();

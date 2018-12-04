@@ -44,6 +44,8 @@ public class DetailActivity extends AppCompatActivity {
         tvTitle.setText(title);
         tvIngredient.setText(ingredients);
 
+        // when this botton is clicked, it checks for internet connection
+        //  and opens up a browser
         btnWebsite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,12 +84,14 @@ public class DetailActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    // creating favourite object
                     Favourite favourite = new Favourite();
                     favourite.setTitle(title);
                     favourite.setHref(href);
                     favourite.setThumbnail(thumbnail);
                     favourite.setIngredients(ingredients);
 
+                    // saves the favourite to database
                     DetailActivity.myAppDatabase.myDao().addFav(favourite);
 
                     Toast.makeText(DetailActivity.this, "Favourite Saved!.",

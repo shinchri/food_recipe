@@ -17,11 +17,15 @@ public class SettingsActivity extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        // make sure the container exists
         if(findViewById(R.id.fragment_container) != null) {
+            // check if the fragment is already added
             if(savedInstanceState!=null) {
+                // the fragment is already added
                 return;
             }
 
+            // adds settings fragment
             getFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, new SettingsFragment()).commit();
         }

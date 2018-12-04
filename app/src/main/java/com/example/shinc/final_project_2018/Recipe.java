@@ -1,5 +1,6 @@
 package com.example.shinc.final_project_2018;
 
+// Class that holds recipe information per each item in the list
 public class Recipe {
     private String title;
     private String href;

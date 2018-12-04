@@ -40,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         cvLogin = findViewById(R.id.cvLogin);
         tvRegister = findViewById(R.id.tvReginster);
 
+        // goes to register page
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // check for login information
         cvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

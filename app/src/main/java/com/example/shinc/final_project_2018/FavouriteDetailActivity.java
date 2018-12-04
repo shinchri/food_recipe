@@ -46,6 +46,7 @@ public class FavouriteDetailActivity extends AppCompatActivity {
         tvTitle.setText(title);
         tvIngredient.setText(ingredients);
 
+        // opens up the website if there is a connection
         btnWebsite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,11 +73,13 @@ public class FavouriteDetailActivity extends AppCompatActivity {
             }
         });
 
+        // delete the favourite from the table
         btnFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 List<Favourite> mylist = FavouriteDetailActivity.myAppDatabase.myDao().getFavouritesWithTitle(title);
 
+                // check if the recipe exists in the Favourite table
                 if(mylist.size() > 0) {
                     Favourite favourite = mylist.get(0);
                     FavouriteDetailActivity.myAppDatabase.myDao().deleteFavourite(favourite);

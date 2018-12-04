@@ -38,6 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
+        // goes back to login page
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,6 +49,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
+        // check for user input and register once validated
         cvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +67,7 @@ public class SignUpActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 }
                 else if(password.length() < 8){
-                    // check the password length
+                    // check the password length is equal to or greater than 8
                     Toast.makeText(SignUpActivity.this, "Please make sure the password is 8 characters or more",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -81,10 +83,12 @@ public class SignUpActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                     else {
+                        // create the user
                         User user = new User();
                         user.setName(username);
                         user.setPassword(password);
 
+                        // Save the user to database
                         SignUpActivity.myAppDatabase.myDao().addUser(user);
 
                         Toast.makeText(SignUpActivity.this, "The user sign up was successful.",

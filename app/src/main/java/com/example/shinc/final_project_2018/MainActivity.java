@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
     ArrayList<Recipe> arrayList = new ArrayList<>();
     JSONArray jsonArray;
     int count;
-    String json_url = "http://www.recipepuppy.com/api/?i=&q=&p=3";
+    String json_url = "http://www.recipepuppy.com/api/?i=&q=&p=3"; // initial api request
 
     public static final String PREF_TEXT_SIZE = "pref_text_size";
     public static final String PREF_SEARCH_TYPE = "pref_search_type";
@@ -146,8 +146,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
     // needed for actionbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // adding option menu
         getMenuInflater().inflate(R.menu.main, menu);
 
+        // adding search function to the action bar
         MenuItem searchItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
@@ -155,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         return super.onCreateOptionsMenu(menu);
     }
 
+    // event upon query submit
     @Override
     public boolean onQueryTextSubmit(String s) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -169,11 +172,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
             json_url = "http://www.recipepuppy.com/api/?i=" + userInput + "&q=";
         }
 
+        // sends api request
         makeJSONRequest();
 
         return true;
     }
 
+    // event fires as the user types into the search
     @Override
     public boolean onQueryTextChange(String s) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -187,6 +192,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         else {
             json_url = "http://www.recipepuppy.com/api/?i=" + userInput + "&q=";
         }
+
+        // sends api request
         makeJSONRequest();
         return true;
     }
